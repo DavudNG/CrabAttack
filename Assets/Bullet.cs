@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
@@ -6,7 +7,9 @@ public class Bullet : MonoBehaviour
 {
     public float fSpeed;
     public float fSpeedMod;
-    public float destroyTime;
+    public float fDestroyTime;
+    public float fBulletDamage;
+    private bool bHasCollided = false;
 
     private ObjectPool<Bullet> _pool;
     private Bullet _bullet;
@@ -19,7 +22,8 @@ public class Bullet : MonoBehaviour
     {
         fSpeed = 10.0f;
         fSpeedMod = 1;
-        destroyTime = 5f;
+        fDestroyTime = 5f;
+        fBulletDamage = 1.0f;
         _bullet = this;
         DeactivateBulletAfterTimeCoroutine = StartCoroutine(DeactivateBulletAfterTime());
     }
@@ -27,13 +31,15 @@ public class Bullet : MonoBehaviour
     // put the stuff here for when it wakes up each time
     private void OnEnable()
     {
+        bHasCollided = false;
+        _bullet = this;
         SetVelocity();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //this.gameObject.transform.position = this.gameObject.transform.position += new Vector3(0, 0, fSpeed * fSpeedMod * Time.deltaTime);
+        
     }
 
     private void SetVelocity()
@@ -43,11 +49,21 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
-        if (other.tag == "Killzone" || other.tag == "Boss")
+        if(!bHasCollided)
         {
-            Debug.Log("collision");
-            Remove();
+            if (other.tag == "Boss")
+            {
+                other.GetComponentInParent<Boss>().takeDamage(fBulletDamage);
+                // add impact sound here
+                bHasCollided = true;
+                Remove();
+            }
+            else if (other.tag == "Killzone")
+            {
+                //Debug.Log("culled");
+                bHasCollided = true;
+                Remove();
+            }
         }
     }
 
@@ -64,12 +80,17 @@ public class Bullet : MonoBehaviour
     private IEnumerator DeactivateBulletAfterTime()
     {
         float elapsedTime = 0f;
-        while(elapsedTime < destroyTime)
+        while(elapsedTime < fDestroyTime)
         {
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         Remove();
+    }
+
+    void PlaySound()
+    {
+        // INSERT PLAY SOUND FUNCTION HERE
     }
 }

@@ -1,6 +1,7 @@
 using NUnit.Framework.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static System.Net.WebRequestMethods;
 
 
 public class Ship : MonoBehaviour
@@ -23,6 +24,9 @@ public class Ship : MonoBehaviour
     public float fShotCooldown;
     public float fOriginalShotCooldown;
 
+    public float fHp;
+    public bool  bAlive;
+    public bool  bShieldType;
 
     private Vector3 m_EulerAngleVelocity;
 
@@ -35,6 +39,9 @@ public class Ship : MonoBehaviour
         fSpeedMod = 1.0f;
         fTurnSpeed = 30.0f;
         fOriginalShotCooldown = 0.05f;
+        fHp = 3.0f;
+        bAlive = true;
+        bShieldType = false;
         fShotCooldown = fOriginalShotCooldown;
         _spawner = this.GetComponent<ShipBulletSpawner>();
         rb = this.GetComponent<Rigidbody>();
@@ -43,10 +50,10 @@ public class Ship : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(gameObject.transform.position.x > MAX_BOUND_X || this.gameObject.transform.position.x < MIN_BOUND_X || gameObject.transform.position.z > MAX_BOUND_Z || gameObject.transform.position.z < MIN_BOUND_Z)
-        //{
-        //    gameObject.transform.position = new Vector3(Mathf.Clamp(this.gameObject.transform.position.x, MIN_BOUND_X, MAX_BOUND_X), gameObject.transform.position.y, Mathf.Clamp(this.gameObject.transform.position.z, MIN_BOUND_Z, MAX_BOUND_Z));
-        //}
+        if(gameObject.transform.position.x > MAX_BOUND_X || this.gameObject.transform.position.x < MIN_BOUND_X || gameObject.transform.position.z > MAX_BOUND_Z || gameObject.transform.position.z < MIN_BOUND_Z)
+        {
+            gameObject.transform.position = new Vector3(Mathf.Clamp(this.gameObject.transform.position.x, MIN_BOUND_X, MAX_BOUND_X), gameObject.transform.position.y, Mathf.Clamp(this.gameObject.transform.position.z, MIN_BOUND_Z, MAX_BOUND_Z));
+        }
            
 
         if(fShotCooldown >= 0)
@@ -85,6 +92,22 @@ public class Ship : MonoBehaviour
 
     void OnShieldSwap()
     {
+        SwapShield();
+    }
 
+    void SwapShield()
+    {
+        bShieldType = !bShieldType;
+    }
+
+    public bool GetShieldType() { return bShieldType; }
+    public bool GetStatus() { return bAlive; }
+    public float GetHp() { return fHp; }
+
+    public void TakeDamage()
+    {
+        fHp -= 1;
+        if (fHp <= 0)
+            bAlive = false;
     }
 }

@@ -15,7 +15,7 @@ public class ShipBulletSpawner : MonoBehaviour
     void Start()
     {
         // on create, take, return, destroy
-        _pool = new ObjectPool<Bullet>(CreateBullet, OnTakeBulletFromPool, OnReturnBulletToPool, OnDestroyBullet, true, 200, 400);
+        _pool = new ObjectPool<Bullet>(CreateBullet, OnTakeBulletFromPool, OnReturnBulletToPool, OnDestroyBullet, true, 300, 400);
     }
 
     // Update is called once per frame
@@ -43,14 +43,14 @@ public class ShipBulletSpawner : MonoBehaviour
         if(_swap)
         {
             bullet.transform.position = _firepoint1.position;
-            bullet.transform.forward = _firepoint1.forward;
+            bullet.transform.up = _firepoint1.forward;
             swapCount();
         }
 
         else
         {
             bullet.transform.position = _firepoint2.position;
-            bullet.transform.forward = _firepoint2.forward;
+            bullet.transform.up = _firepoint2.forward;
             swapCount();
         }
         bullet.gameObject.SetActive(true);
@@ -58,7 +58,8 @@ public class ShipBulletSpawner : MonoBehaviour
 
     private void OnReturnBulletToPool(Bullet bullet)
     {
-        bullet.gameObject.SetActive(false);
+            if(bullet != null && bullet.gameObject.activeSelf)
+             bullet.gameObject.SetActive(false);
     }
 
     private void OnDestroyBullet(Bullet bullet)
