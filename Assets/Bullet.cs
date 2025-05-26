@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
+
 public class Bullet : MonoBehaviour
 {
     public float fSpeed;
