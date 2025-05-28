@@ -28,6 +28,8 @@ public class Ship : MonoBehaviour
     public bool  bAlive;
     public bool  bShieldType;
 
+    public AudioSource LaserSound;
+
     private Vector3 m_EulerAngleVelocity;
 
 
@@ -84,6 +86,8 @@ public class Ship : MonoBehaviour
     {
         if(fShotCooldown <= 0)
         {
+            LaserSound.pitch = Random.Range(0.8f, 1.2f);
+            LaserSound.Play();
             // TODO SHOOT
             fShotCooldown = fOriginalShotCooldown;
             _spawner._pool.Get();

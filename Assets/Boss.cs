@@ -14,9 +14,12 @@ public class Boss : MonoBehaviour
     public Transform clawFiringPointRight;
     public GameObject _target;
     public MeshRenderer _renderer;
+    public AudioSource HitSound;
+    public ScoreTrack Score;
     Color origColor;
 
     private Coroutine _damageFlashCorotine;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,8 +43,11 @@ public class Boss : MonoBehaviour
 
     public void takeDamage(float damage)
     {
+        HitSound.pitch = Random.Range(0.8f, 1.2f);
+        HitSound.Play();
         bossHp -= damage;
         CallDamageFlash();
+        Score.IncreaseScore();
 
         if (bossHp <= 0)
         {
