@@ -11,15 +11,11 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        ButtonSound.pitch = Random.Range(0.9f, 1.1f);
-        ButtonSound.Play();
         SceneManager.LoadSceneAsync(1);
     }
 
     public void QuitGame()
     {
-        ButtonSound.pitch = Random.Range(0.9f, 1.1f);
-        ButtonSound.Play();
         Application.Quit();
     }
 }
