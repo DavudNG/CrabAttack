@@ -25,6 +25,14 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadSceneAsync(3);
     }
 
+    public void BackMenu()
+    {
+
+        ButtonSound.pitch = Random.Range(0.9f, 1.1f);
+        ButtonSound.Play();
+        SceneManager.LoadSceneAsync(0);
+    }
+
     public void QuitGame()
     {
 
