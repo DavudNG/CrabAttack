@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+    
 
 public class MainMenu : MonoBehaviour
 {
@@ -15,6 +15,14 @@ public class MainMenu : MonoBehaviour
         ButtonSound.pitch = Random.Range(0.9f, 1.1f);
         ButtonSound.Play();
         SceneManager.LoadSceneAsync(1);
+    }
+
+    public void LoadCredits()
+    {
+
+        ButtonSound.pitch = Random.Range(0.9f, 1.1f);
+        ButtonSound.Play();
+        SceneManager.LoadSceneAsync(3);
     }
 
     public void QuitGame()
