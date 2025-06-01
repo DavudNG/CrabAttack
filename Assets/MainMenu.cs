@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour
 
         ButtonSound.pitch = Random.Range(0.9f, 1.1f);
         ButtonSound.Play();
-        SceneManager.LoadSceneAsync(3);
+        SceneManager.LoadSceneAsync(2);
     }
 
     public void BackMenu()
