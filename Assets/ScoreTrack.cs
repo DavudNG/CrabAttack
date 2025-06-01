@@ -19,4 +19,9 @@ public class ScoreTrack : MonoBehaviour
         score += ScoreIncrement;
         ScoreCount.text = "Score: " + score;
     }
+
+    public int GetScore()
+    {
+        return score;
+    }
 }

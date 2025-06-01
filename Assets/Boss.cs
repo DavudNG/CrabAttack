@@ -9,14 +9,24 @@ public class Boss : MonoBehaviour
     public float fFlashTime;
 
     public bool bossAlive;
-    public Transform FiringPoint;
-    public Transform clawFiringPointLeft;
-    public Transform clawFiringPointRight;
+    //public Transform FiringPoint;
+    //public Transform clawFiringPointLeft;
+    //public Transform clawFiringPointRight;
+    public BossBulletSpawner _mainCannon;
+    public BossBulletSpawner _ClawCannonR;
+    public BossBulletSpawner _ClawCannonL;
+
     public GameObject _target;
-    public MeshRenderer _renderer;
+    public SpriteRenderer _renderer;
     public AudioSource HitSound;
     public ScoreTrack Score;
     Color origColor;
+
+    public float maxAtkTimer = 1.5f;
+    public float atkTimer;
+
+    public float maxSpinAtkTimer = 4.0f;
+    public float spinAtkTimer;
 
     private Coroutine _damageFlashCorotine;
 
@@ -25,15 +35,37 @@ public class Boss : MonoBehaviour
     void Start()
     {
         bossAlive = true;
-        bossHp = 500;
+        bossHp = 30;
         fFlashTime = 0.25f;
-        origColor = _renderer.material.color;
+        origColor = _renderer.color;
+        atkTimer = 2f;
+        spinAtkTimer = 3.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(atkTimer <= 0)
+        {
+            //do atk
+            Shoot1();
+            atkTimer = maxAtkTimer;
+        }
+        else
+        {
+            atkTimer -= Time.deltaTime;
+        }
 
+        if (spinAtkTimer <= 0)
+        {
+            //do atk
+            Shoot2();
+            spinAtkTimer = maxSpinAtkTimer;
+        }
+        else
+        {
+            spinAtkTimer -= Time.deltaTime;
+        }
     }
 
     void updateTargetVector()
@@ -55,6 +87,45 @@ public class Boss : MonoBehaviour
         }
     }
 
+    private void Shoot1()
+    {
+       _mainCannon._pool.Get();
+       _mainCannon._pool.Get();
+       _mainCannon._pool.Get();
+       _mainCannon._pool.Get();
+       _mainCannon._pool.Get();
+    }
+
+    private void Shoot2()
+    {
+        _ClawCannonR._pool.Get();
+        _ClawCannonL._pool.Get();
+        
+        _ClawCannonR._pool.Get();
+        _ClawCannonL._pool.Get();
+        
+        _ClawCannonR._pool.Get();
+        _ClawCannonL._pool.Get();
+        
+        _ClawCannonR._pool.Get();
+        _ClawCannonL._pool.Get();
+        
+        _ClawCannonR._pool.Get();
+        _ClawCannonL._pool.Get();
+        
+        _ClawCannonR._pool.Get();
+        _ClawCannonL._pool.Get();
+        
+        _ClawCannonR._pool.Get();
+        _ClawCannonL._pool.Get();
+        
+        _ClawCannonR._pool.Get();
+        _ClawCannonL._pool.Get();
+        
+        _ClawCannonR._pool.Get();
+        _ClawCannonL._pool.Get();
+    }
+
     public bool GetStatus() { return bossAlive; }
 
     public void CallDamageFlash()
@@ -74,7 +145,7 @@ public class Boss : MonoBehaviour
             //_renderer.material.SetFloat("_Metallic", currAmount);
             
             Color lerpedColor = Color.Lerp(Color.red, origColor, elapsedTime / fFlashTime);
-            _renderer.material.color = lerpedColor;
+            _renderer.color = lerpedColor;
             yield return null;
         }
         //new Color(255, 165, 0)

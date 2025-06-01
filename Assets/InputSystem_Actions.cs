@@ -578,6 +578,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Restart"",
+                    ""type"": ""Button"",
+                    ""id"": ""c325ecd5-44b7-4d61-9a55-1de837c23ef8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -767,6 +776,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3a00945b-36c2-4567-b094-0dc6581ce05b"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -852,6 +872,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Ship_ShieldSwap = m_Ship.FindAction("ShieldSwap", throwIfNotFound: true);
         m_Ship_SlowDown = m_Ship.FindAction("SlowDown", throwIfNotFound: true);
         m_Ship_Move = m_Ship.FindAction("Move", throwIfNotFound: true);
+        m_Ship_Restart = m_Ship.FindAction("Restart", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1041,6 +1062,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Ship_ShieldSwap;
     private readonly InputAction m_Ship_SlowDown;
     private readonly InputAction m_Ship_Move;
+    private readonly InputAction m_Ship_Restart;
     public struct ShipActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1049,6 +1071,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @ShieldSwap => m_Wrapper.m_Ship_ShieldSwap;
         public InputAction @SlowDown => m_Wrapper.m_Ship_SlowDown;
         public InputAction @Move => m_Wrapper.m_Ship_Move;
+        public InputAction @Restart => m_Wrapper.m_Ship_Restart;
         public InputActionMap Get() { return m_Wrapper.m_Ship; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1070,6 +1093,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Restart.started += instance.OnRestart;
+            @Restart.performed += instance.OnRestart;
+            @Restart.canceled += instance.OnRestart;
         }
 
         private void UnregisterCallbacks(IShipActions instance)
@@ -1086,6 +1112,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Restart.started -= instance.OnRestart;
+            @Restart.performed -= instance.OnRestart;
+            @Restart.canceled -= instance.OnRestart;
         }
 
         public void RemoveCallbacks(IShipActions instance)
@@ -1167,5 +1196,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnShieldSwap(InputAction.CallbackContext context);
         void OnSlowDown(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnRestart(InputAction.CallbackContext context);
     }
 }
